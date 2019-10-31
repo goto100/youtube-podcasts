@@ -27,11 +27,11 @@ def main():
 		if fg.title():
 			fg.rss_file(os.path.join(target_path, u'podcast.xml'), pretty=True)
 		else:
-			print 'no file found, skip'
+			print('no file found, skip')
 
 def process_dir(root, name, fg, prefix):
 	path = os.path.join(root, name)
-	print "Processing %s" % name
+	print("Processing %s" % name)
 
 	for file in os.listdir(path):
 		parts = os.path.splitext(file)
