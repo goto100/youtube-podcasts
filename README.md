@@ -8,7 +8,8 @@ You could add more lines as you wish
 
 ```/volume1/workdir/download.sh
 
-youtube-dl --proxy socks5://127.0.0.1:1086 https://www.youtube.com/channel/CHANNEL_ID```
+youtube-dl --proxy socks5://127.0.0.1:1086 https://www.youtube.com/channel/CHANNEL_ID
+```
 
 ### Run youtube-podcasts
 
