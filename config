@@ -5,6 +5,7 @@
 --playlist-start 1
 --playlist-end 10
 --download-archive archive.txt
+--socket-timeout 60
 -o '%(uploader)s/%(upload_date)s-%(title)s.%(ext)s'
 --write-info-json
 --write-thumbnail

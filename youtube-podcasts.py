@@ -29,9 +29,9 @@ def main():
 		else:
 			print('no file found, skip')
 
-def process_dir(root, name, fg, prefix):
-	path = os.path.join(root, name)
-	print("Processing %s" % name)
+def process_dir(root, folder, fg, prefix):
+	path = os.path.join(root, folder)
+	print(("Processing %s" % folder).encode('utf-8'))
 
 	for file in os.listdir(path):
 		parts = os.path.splitext(file)
@@ -67,7 +67,7 @@ def process_dir(root, name, fg, prefix):
 			fg.link(href = info['channel_url'])
 			fg.podcast.itunes_image(jpg_url)
 
-		mp3 = prefix + info['uploader'] + u'/' + name + u".mp3"
+		mp3 = prefix + folder + u'/' + name + u".mp3"
 		pub_date = datetime.datetime.strptime(info['upload_date'], '%Y%m%d').replace(tzinfo = dateutil.tz.UTC)
 
 		fe = fg.add_entry()
