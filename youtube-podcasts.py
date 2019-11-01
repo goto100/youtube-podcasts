@@ -63,7 +63,7 @@ def process_dir(root, folder, fg, prefix):
 
 		if not fg.title():
 			fg.title(info['uploader'])
-			fg.description(name)
+			fg.description(folder)
 			fg.link(href = info['channel_url'])
 			fg.podcast.itunes_image(jpg_url)
 
