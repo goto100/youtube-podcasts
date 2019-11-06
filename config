@@ -7,6 +7,6 @@
 --playlist-reverse
 --download-archive archive.txt
 --socket-timeout 60
--o '%(uploader)s/%(upload_date)s-%(title)s.%(ext)s'
+-o '%(uploader)s/%(upload_date)s-%(title).64s.%(ext)s'
 --write-info-json
 --write-thumbnail
