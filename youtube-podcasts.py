@@ -22,6 +22,7 @@ def main():
 
         fg = FeedGenerator()
         fg.load_extension('podcast')
+        fg.description(name)
         process_dir(root, name, fg, prefix)
         if fg.title():
             fg.rss_file(os.path.join(target_path, u'podcast.xml'), pretty=True)
@@ -33,7 +34,9 @@ def process_dir(root, folder, fg, prefix):
     print(("Processing %s" % folder).encode('utf-8'))
 
     files = [os.path.join(path, f) for f in os.listdir(path)]
-    files.sort(key=os.path.getmtime, reverse=True)
+    files.sort(key=os.path.getmtime)
+    info = {}
+    jpg_url = ""
     for file in files:
         parts = os.path.splitext(os.path.basename(file))
         if parts[1] != u".mp3":
@@ -61,12 +64,6 @@ def process_dir(root, folder, fg, prefix):
             new_img = crop_center(new_img, 1800, 1800)
             new_img.save(jpg_resize_path, "JPEG", optimize=True)
 
-        if not fg.title():
-            fg.title(info['uploader'])
-            fg.description(folder)
-            fg.link(href = info['channel_url'])
-            fg.podcast.itunes_image(jpg_url)
-
         mp3 = prefix + folder + u'/' + name + u".mp3"
         pub_date = datetime.datetime.strptime(info['upload_date'], '%Y%m%d').replace(tzinfo = dateutil.tz.UTC)
 
@@ -78,6 +75,11 @@ def process_dir(root, folder, fg, prefix):
         fe.description(info['description'])
         fe.pubDate(pub_date)
         fe.enclosure(mp3, 0, 'audio/mpeg')
+
+    if info:
+        fg.title(info['uploader'])
+        fg.link(href = info['channel_url'])
+        fg.podcast.itunes_image(jpg_url)
 
 def crop_center(pil_img, crop_width, crop_height):
     img_width, img_height = pil_img.size
