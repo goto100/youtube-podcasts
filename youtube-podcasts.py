@@ -71,7 +71,7 @@ def process_dir(root, folder, fg, prefix):
         pub_date = datetime.datetime.strptime(info['upload_date'], '%Y%m%d').replace(tzinfo = dateutil.tz.UTC)
 
         fe = fg.add_entry()
-        fe.id(mp3)
+        fe.id(id)
         fe.title(info['title'])
         fe.podcast.itunes_image(jpg_url)
         fe.link(href=info['webpage_url'])
