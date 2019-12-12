@@ -22,7 +22,6 @@ def main():
 
         fg = FeedGenerator()
         fg.load_extension('podcast')
-        fg.podcast.itunes_category('Goverment')
         process_dir(root, name, fg, prefix)
         if fg.title():
             fg.rss_file(os.path.join(target_path, u'podcast.xml'), pretty=True)
@@ -33,8 +32,10 @@ def process_dir(root, folder, fg, prefix):
     path = os.path.join(root, folder)
     print(("Processing %s" % folder).encode('utf-8'))
 
-    for file in os.listdir(path):
-        parts = os.path.splitext(file)
+    files = [os.path.join(path, f) for f in os.listdir(path)]
+    files.sort(key=os.path.getmtime, reverse=True)
+    for file in files:
+        parts = os.path.splitext(os.path.basename(file))
         if parts[1] != u".mp3":
             continue
         name = parts[0]
@@ -46,7 +47,7 @@ def process_dir(root, folder, fg, prefix):
         thumb_dir = os.path.join(root, u'thumbnails')
         if not os.path.exists(thumb_dir):
             os.mkdir(thumb_dir)
-            
+
         info = json.loads(io.open(info_filename, 'r', encoding='utf8').read())
         id = info['id']
 
@@ -60,7 +61,6 @@ def process_dir(root, folder, fg, prefix):
             new_img = crop_center(new_img, 1800, 1800)
             new_img.save(jpg_resize_path, "JPEG", optimize=True)
 
-
         if not fg.title():
             fg.title(info['uploader'])
             fg.description(folder)
@@ -68,8 +68,7 @@ def process_dir(root, folder, fg, prefix):
             fg.podcast.itunes_image(jpg_url)
 
         mp3 = prefix + folder + u'/' + name + u".mp3"
-        # pub_date = datetime.datetime.strptime(info['upload_date'], '%Y%m%d').replace(tzinfo = dateutil.tz.UTC)
-        pub_date = datetime.datetime.fromtimestamp(os.path.getmtime(info_filename)).replace(tzinfo = dateutil.tz.UTC)
+        pub_date = datetime.datetime.strptime(info['upload_date'], '%Y%m%d').replace(tzinfo = dateutil.tz.UTC)
 
         fe = fg.add_entry()
         fe.id(mp3)
