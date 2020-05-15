@@ -58,11 +58,14 @@ def process_dir(root, folder, fg, prefix):
         jpg_resize_path = os.path.join(thumb_dir, u'%s.jpg' % id)
         jpg_url = prefix + u'thumbnails/' + id + u".jpg"
         if not os.path.exists(jpg_resize_path):
-            img = Image.open(jpg_path)
-            width, height = img.size
-            new_img = img.resize((3200, 1800))
-            new_img = crop_center(new_img, 1800, 1800)
-            new_img.save(jpg_resize_path, "JPEG", optimize=True)
+            try:
+                img = Image.open(jpg_path)
+                width, height = img.size
+                new_img = img.resize((3200, 1800))
+                new_img = crop_center(new_img, 1800, 1800)
+                new_img.save(jpg_resize_path, "JPEG", optimize=True)
+            except IOError:
+                print("image error, ignore")
 
         mp3 = prefix + folder + u'/' + name + u".mp3"
         pub_date = datetime.datetime.strptime(info['upload_date'], '%Y%m%d').replace(tzinfo = dateutil.tz.UTC)

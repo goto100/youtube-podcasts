@@ -1,7 +1,14 @@
-FROM mikenye/youtube-dl
+FROM mikenye/youtube-dl:latest
+
 
 ENV LIBRARY_PATH=/lib:/usr/lib
-RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories && apk add build-base python-dev py-pip jpeg-dev zlib-dev libxslt-dev && pip install lxml python-dateutil Pillow feedgen
+ADD sources.list /etc/apt/
+RUN apt update && apt install -y python python-pip && pip install lxml python-dateutil Pillow feedgen
+RUN apt install -y locales
+RUN sed -i -e 's/# zh_CN.UTF-8 UTF-8/zh_CN.UTF-8 UTF-8/' /etc/locale.gen && locale-gen
+ENV LANG zh_CN.UTF-8  
+ENV LANGUAGE zh_CN:zh:en_US:en   
+ENV LC_ALL=zh_CN.UTF-8
 COPY config /etc/youtube-dl.conf
 COPY youtube-podcasts.py /app/youtube-podcasts.py
 COPY sync.sh /app/sync.sh
