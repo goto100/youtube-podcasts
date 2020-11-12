@@ -9,6 +9,16 @@ import datetime
 import dateutil
 from feedgen.feed import FeedGenerator
 from PIL import Image
+from urlparse import urljoin
+from urllib import quote
+
+reload(sys)
+sys.setdefaultencoding('utf8')
+
+def urlencode(val):
+    if isinstance(val,unicode):
+        return quote(str(val))
+    return quote(val)
 
 def main():
     prefix = sys.argv[1]
@@ -67,7 +77,7 @@ def process_dir(root, folder, fg, prefix):
             except IOError:
                 print("image error, ignore")
 
-        mp3 = prefix + folder + u'/' + name + u".mp3"
+        mp3 = urljoin(prefix, urlencode(folder + u'/' + name + u".mp3"))
         pub_date = datetime.datetime.strptime(info['upload_date'], '%Y%m%d').replace(tzinfo = dateutil.tz.UTC)
 
         fe = fg.add_entry()
